@@ -5,11 +5,14 @@ import java.util.List;
 
 public class PizzaApp {
 
-    public static void main(String[] args) {
-        List<PizzaRecipe> pizzaRecipes = List.of(
-                new PizzaRecipe("Margherita", List.of(Ingredient.Cheese)),
-                new PizzaRecipe("Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni)));
+    public static final List<PizzaRecipe> pizzaRecipes = List.of(
+            new PizzaRecipe("Margherita", List.of(Ingredient.Cheese)),
+            new PizzaRecipe("Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni)),
+            new PizzaRecipe("Double Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni, Ingredient.Peperoni)),
+            new PizzaRecipe("Capricciosa", List.of(Ingredient.Cheese, Ingredient.Ham,  Ingredient.Mushrooms))
+    );
 
+    public static void main(String[] args) {
         PizzaShop shop = new PizzaShop(pizzaRecipes,2, 2, 1);
 
         List<Pizza> orderedPizzas = new ArrayList<>();
@@ -17,19 +20,19 @@ public class PizzaApp {
             orderedPizzas.add(shop.placeOrder(recipe, PizzaSize.L));
         }
 
-        do {
+
+        boolean allPizzasBoxed = false;
+        while (!allPizzasBoxed) {
             shop.update();
 
-            boolean allPizzasBoxed = orderedPizzas.stream().anyMatch(
+            allPizzasBoxed = orderedPizzas.stream().anyMatch(
                     (Pizza p) -> p.state == PizzaState.Boxed
             );
 
             System.out.println(orderedPizzas);
+        }
 
-            if (allPizzasBoxed) {
-                break;
-            }
-        } while (true);
-
+        System.out.println("All orders complete.");
     }
+
 }
