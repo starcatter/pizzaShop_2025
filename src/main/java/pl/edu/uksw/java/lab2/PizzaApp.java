@@ -1,14 +1,15 @@
 package pl.edu.uksw.java.lab2;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 public class PizzaApp {
 
     public static final List<PizzaRecipe> pizzaRecipes = List.of(
             new PizzaRecipe("Margherita", List.of(Ingredient.Cheese)),
-            new PizzaRecipe("Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni)),
-            new PizzaRecipe("Double Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni, Ingredient.Peperoni)),
+             new PizzaRecipe("Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni)),
+            new PizzaRecipe("Double Peperoni", List.of(Ingredient.Cheese, Ingredient.Peperoni, Ingredient.Peperoni)) ,
             new PizzaRecipe("Capricciosa", List.of(Ingredient.Cheese, Ingredient.Ham,  Ingredient.Mushrooms))
     );
 
@@ -25,14 +26,16 @@ public class PizzaApp {
         while (!allPizzasBoxed) {
             shop.update();
 
-            allPizzasBoxed = orderedPizzas.stream().anyMatch(
-                    (Pizza p) -> p.state == PizzaState.Boxed
+            allPizzasBoxed = orderedPizzas.stream().noneMatch(
+                    (Pizza p) -> p.state != PizzaState.Boxed
             );
 
             System.out.println(orderedPizzas);
         }
 
         System.out.println("All orders complete.");
+        System.out.println(orderedPizzas);
+
     }
 
 }
