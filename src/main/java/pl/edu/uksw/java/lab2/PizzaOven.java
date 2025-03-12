@@ -10,10 +10,28 @@ class PizzaOven {
     }
 
     void update() {
-        if (contents != null && timeLeft > 0) {
-            timeLeft--;
-        } else if (contents != null) {
-            contents.state = PizzaState.Baked;
+        if (contents != null) {
+            switch (contents.state) {
+                case Ordered:
+                case Dough:
+                case Pie:
+                    throw new RuntimeException("Pizza not ready to bake");
+                case Filled:
+                    throw new RuntimeException("Should already be baking");
+                case Baking:
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                    } else {
+                        contents.state = PizzaState.Baked;
+                    }
+                    break;
+                case Baked:
+                    contents.state = PizzaState.Burned;
+                    break;
+                case Boxed:
+                    throw new RuntimeException("Invalid state");
+            }
+
         }
     }
 

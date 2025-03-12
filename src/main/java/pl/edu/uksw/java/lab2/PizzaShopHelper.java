@@ -22,10 +22,12 @@ public class PizzaShopHelper implements PizzaShopWorker{
                     throw new RuntimeException("Not my job!");
                 }
                 case Filled -> {
-                    shop.ovens.stream()
-                            .filter(PizzaOven::isFree)
-                            .findFirst()
-                            .ifPresent(this::loadPizzaInOven);
+                    for (PizzaOven oven : shop.ovens) {
+                        if (oven.isFree()) {
+                            loadPizzaInOven(oven);
+                            break;
+                        }
+                    }
                 }
                 case Baking -> {
                     throw new RuntimeException("Hot pizza!");
@@ -63,10 +65,16 @@ public class PizzaShopHelper implements PizzaShopWorker{
 
     private boolean checkOven() {
         for (var pizzaOven : shop.ovens) {
-            if (pizzaOven.contents != null && pizzaOven.contents.state == PizzaState.Baked) {
-                workedPizza = pizzaOven.contents;
-                pizzaOven.contents = null;
-                return true;
+            if (pizzaOven.contents != null) {
+                if (pizzaOven.contents.state == PizzaState.Baked) {
+                    workedPizza = pizzaOven.contents;
+                    pizzaOven.contents = null;
+                    return true;
+                } else if (pizzaOven.contents.state == PizzaState.Burned) {
+                    pizzaOven.contents = null;
+                    System.out.println("Throwing away burnt pizza :(");
+                    return true;
+                }
             }
         }
         return false;

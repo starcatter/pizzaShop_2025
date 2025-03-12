@@ -7,5 +7,5 @@ enum PizzaState {
     Filled,
     Baking,
     Baked,
-    Boxed
+    Burned, Boxed
 }
